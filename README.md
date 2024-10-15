@@ -1,4 +1,4 @@
-# React Todo App Load Todos
+  # React Todo App Load Todos
 
 You goal is to implement a simple Todo App that will save all changes to [the API](https://mate-academy.github.io/fe-students-api/).
 
