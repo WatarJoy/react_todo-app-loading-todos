@@ -6,11 +6,13 @@ import { Header } from './components/Header';
 import { TodoList } from './components/TodoList';
 import { Footer } from './components/Footer';
 import { ErrorNotification } from './components/ErrorNotification';
+import { ErrorMessages, FilterStates } from './types/enums';
+import { filterTodos } from './utils/todoFilter';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+  const [filter, setFilter] = useState<FilterStates>(FilterStates.ALL);
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -23,10 +25,8 @@ export const App: React.FC = () => {
 
         setTodos(data);
       } catch (err) {
-        setError('Unable to load todos');
-        const timer = setTimeout(() => {
-          setError(null);
-        }, 3000);
+        setError(ErrorMessages.LOAD_TODOS);
+        const timer = setTimeout(() => setError(null), 3000);
 
         return () => clearTimeout(timer);
       }
@@ -39,18 +39,7 @@ export const App: React.FC = () => {
     return <UserWarning />;
   }
 
-  const filteredTodos = todos.filter(todo => {
-    if (filter === 'active') {
-      return !todo.completed;
-    }
-
-    if (filter === 'completed') {
-      return todo.completed;
-    }
-
-    return true;
-  });
-
+  const filteredTodos = filterTodos(todos, filter);
   const hasTodos = todos.length > 0;
   const allCompleted = todos.length > 0 && todos.every(todo => todo.completed);
 
@@ -64,7 +53,7 @@ export const App: React.FC = () => {
           <Footer todos={todos} filter={filter} setFilter={setFilter} />
         )}
       </div>
-      <ErrorNotification error={error} />
+      <ErrorNotification error={error} setError={setError} />
     </div>
   );
 };

@@ -1,5 +1,7 @@
+// src/components/Footer.tsx
 import React from 'react';
 import { FooterProps } from '../types/Props';
+import { FilterStates } from '../types/enums';
 
 export const Footer: React.FC<FooterProps> = ({ todos, filter, setFilter }) => {
   const activeTodos = todos.filter(todo => !todo.completed).length;
@@ -13,25 +15,25 @@ export const Footer: React.FC<FooterProps> = ({ todos, filter, setFilter }) => {
       <nav className="filter" data-cy="Filter">
         <a
           href="#/"
-          className={`filter__link ${filter === 'all' ? 'selected' : ''}`}
+          className={`filter__link ${filter === FilterStates.ALL ? 'selected' : ''}`}
           data-cy="FilterLinkAll"
-          onClick={() => setFilter('all')}
+          onClick={() => setFilter(FilterStates.ALL)}
         >
           All
         </a>
         <a
           href="#/active"
-          className={`filter__link ${filter === 'active' ? 'selected' : ''}`}
+          className={`filter__link ${filter === FilterStates.ACTIVE ? 'selected' : ''}`}
           data-cy="FilterLinkActive"
-          onClick={() => setFilter('active')}
+          onClick={() => setFilter(FilterStates.ACTIVE)}
         >
           Active
         </a>
         <a
           href="#/completed"
-          className={`filter__link ${filter === 'completed' ? 'selected' : ''}`}
+          className={`filter__link ${filter === FilterStates.COMPLETED ? 'selected' : ''}`}
           data-cy="FilterLinkCompleted"
-          onClick={() => setFilter('completed')}
+          onClick={() => setFilter(FilterStates.COMPLETED)}
         >
           Completed
         </a>
